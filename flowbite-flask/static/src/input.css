@@ -21,23 +21,28 @@
 }
 
 .gradient {
-	color: transparent;
-	-webkit-background-clip: text;
+	color: transparent !important;
 	background-clip: text;
 	background-image: linear-gradient(to bottom, white, #edd1bd);
 }
 
 .text-ap {
-    color: red;
-    animation-duration: 3s;
-    animation-name: appear;
+    animation-duration: 1.5s !important;
+    animation-name: appear !important;
+
 }
 
 @keyframes appear {
     from {
         opacity: 0;
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
+        transform: translateY(0px);
     }
+}
+
+.port-keeper {
+  @apply mb-4 text-4xl font-extrabold leading-none p-4 tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white;
 }
