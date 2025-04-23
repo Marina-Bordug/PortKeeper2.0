@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{url_for('static',filename='dist/output.css')}}">
 </head>
 
-<body class="bg-primary-50">
+<body class="bg-primary-50 min-h-screen flex flex-col">
     <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded-sm dark:bg-gray-900">
         <div class="container flex flex-wrap items-center justify-between mx-auto">
             <a href="/" class="flex items-center">
@@ -54,22 +54,8 @@
             </div>
         </div>
     </nav>
-<div class="min-h-screen bg-primary-50 text-center flex flex-col items-center justify-center">
-    <h1 class="port-keeper gradient">
-        <span style=" color: #D48F6F">P</span>ort<span style="color: #D48F6F">K</span>eeper
-    </h1>
-    <h4 class="text-lg font-bold dark:text-white gradient text-ap my-4">Save your progress</h4>
-    <ul class="flex">
-    <li><a href="/teacher-login" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
-<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent text-ap">
-Sign in as teacher</span></a></li>
-    <li><a href="/student-login" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
-<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent text-ap ">
-Sign in as student</span></a></li>
-</ul>
-    <p class="text-lg dark:text-white gradient text-ap my-4">Ещё нет аккаунта? <a href="/register" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Зарегистрируйтесь</a></p>
-</div>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-</body>
 
+{% block content %}
+{% endblock %}
+</body>
 </html>
