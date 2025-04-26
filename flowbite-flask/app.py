@@ -1,24 +1,32 @@
 from flask import Flask, render_template, redirect, flash
 from flask import request
+from flask_login import LoginManager, current_user, login_user, login_required
 from data.teachers import Teacher
 from data.students import Student
 from data.portfolios import Portfolio
 from data.classes import Classroom
-from forms.teacher_log import LoginForm, RegisterForm
+from forms.login import LoginForm, RegisterForm
 import os
 from data.db_init import db
-SECRET_KEY = os.urandom(32)
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = SECRET_KEY
+login_manager = LoginManager()
+login_manager.init_app(app)
+app.config['SECRET_KEY'] = os.urandom(32)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../flowbite-flask/db/database_pk.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../db/database_pk.db"
 
 db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.query(Teacher).filter(Teacher.id == user_id).first()
+
 
 @app.route("/")
 @app.route("/index")
@@ -32,6 +40,7 @@ def teacher_log():
     if form.validate_on_submit():
         teacher = db.session.query(Teacher).filter(Teacher.login == form.login.data).first()
         if teacher and teacher.check_password(form.password.data):
+            login_user(teacher)
             return redirect('/teacher-acc')
         else:
             print('Неверный логин или пароль')
@@ -45,6 +54,7 @@ def student_log():
     if form.validate_on_submit():
         student = db.session.query(Student).filter(Student.login == form.login.data).first()
         if student and student.check_password(form.password.data):
+            login_user(student)
             return redirect('/student-acc')
         else:
             print('Неверный логин или пароль')
@@ -56,7 +66,6 @@ def student_log():
 def new_acc():
     form = RegisterForm()
     if form.validate_on_submit():
-        # db_sess = db.session.create_session()
         if db.session.query(Teacher).filter(Teacher.login == form.login.data).first():
             return render_template('create-acc.html', title='Регистрация',
                                    form=form,
@@ -72,15 +81,15 @@ def new_acc():
     return render_template('create-acc.html', title='Регистрация', form=form)
 
 
+@login_required
 @app.route("/teacher-acc")
 def teacher_acc():
-    teacher = db.session.query(Teacher).first()
-    classrooms = db.session.query(Classroom)
-    teach_id = teacher.id
-    classes = [c for c in classrooms if c.teacher_id == teach_id]
-    return render_template("teacher-acc.html", teacher=teacher)
+    teacher = db.session.query(Teacher).filter(Teacher.id == current_user.id).first()
+    classes = [c for c in db.session.query(Classroom).all() if c.teacher_id == teacher.id]
+    return render_template("teacher-acc.html", teacher=teacher, classes=classes)
 
 
+@login_required
 @app.route("/student-acc")
 def student_acc():
     students = db.session.query(Student)

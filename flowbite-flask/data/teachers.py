@@ -2,11 +2,13 @@ import datetime
 import sqlalchemy
 from .db_init import db
 from sqlalchemy import orm
+from flask_login import UserMixin
+from sqlalchemy_serializer import SerializerMixin
 
 from werkzeug.security import *
 
 
-class Teacher(db.Model):
+class Teacher(db.Model, UserMixin, SerializerMixin):
     __tablename__ = 'teachers'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
