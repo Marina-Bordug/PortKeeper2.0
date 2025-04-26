@@ -1,6 +1,9 @@
 from flask import Flask, render_template, redirect, flash
 from flask import request
 from data.teachers import Teacher
+from data.students import Student
+from data.portfolios import Portfolio
+from data.classes import Classroom
 from forms.teacher_log import LoginForm, RegisterForm
 import os
 from data.db_init import db
@@ -24,13 +27,11 @@ def index():
 
 
 @app.route("/teacher-login", methods=['POST', 'GET'])
-def t_log():
+def teacher_log():
     form = LoginForm()
     if form.validate_on_submit():
-        print(1)
         teacher = db.session.query(Teacher).filter(Teacher.login == form.login.data).first()
         if teacher and teacher.check_password(form.password.data):
-        # if teacher:
             return redirect('/teacher-acc')
         else:
             print('Неверный логин или пароль')
@@ -39,11 +40,16 @@ def t_log():
 
 
 @app.route("/student-login", methods=['POST', 'GET'])
-def s_log():
-    if request.method == 'GET':
-        return render_template("student-login.html")
-    elif request.method == 'POST':
-        return request.form['login'], request.form['password']
+def student_log():
+    form = LoginForm()
+    if form.validate_on_submit():
+        student = db.session.query(Student).filter(Student.login == form.login.data).first()
+        if student and student.check_password(form.password.data):
+            return redirect('/student-acc')
+        else:
+            print('Неверный логин или пароль')
+            return redirect('/student-login')
+    return render_template("student-login.html", form=form)
 
 
 @app.route("/create-acc", methods=['GET', 'POST'])
@@ -67,13 +73,18 @@ def new_acc():
 
 
 @app.route("/teacher-acc")
-def t_acc():
-    return render_template("teacher-acc.html")
+def teacher_acc():
+    teacher = db.session.query(Teacher).first()
+    classrooms = db.session.query(Classroom)
+    teach_id = teacher.id
+    classes = [c for c in classrooms if c.teacher_id == teach_id]
+    return render_template("teacher-acc.html", teacher=teacher)
 
 
 @app.route("/student-acc")
-def s_acc():
-    return render_template("student-acc.html")
+def student_acc():
+    students = db.session.query(Student)
+    return render_template("student-acc.html", students=students)
 
 
 if __name__ == '__main__':

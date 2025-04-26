@@ -6,8 +6,8 @@ from sqlalchemy import orm
 from werkzeug.security import *
 
 
-class Teacher(db.Model):
-    __tablename__ = 'teachers'
+class Student(db.Model):
+    __tablename__ = 'students'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
@@ -16,8 +16,8 @@ class Teacher(db.Model):
                               index=True, unique=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     avatar = sqlalchemy.Column(sqlalchemy.BLOB, nullable=True)
-
-    classrooms = orm.relationship("Classroom", back_populates='teacher')
+    class_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("classes.id"))
+    classroom = orm.relationship('Classroom')
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
@@ -26,3 +26,4 @@ class Teacher(db.Model):
         return check_password_hash(self.hashed_password, password)
 
 
+    # portfolio = orm.relationship("Portfolio", back_populates='student_name')
