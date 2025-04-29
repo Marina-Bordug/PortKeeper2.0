@@ -21,3 +21,4 @@
 - [x] Создать базу данных
 
 > Презентация: https://docs.google.com/presentation/d/1FbuMrZ_E3bzkWJFJhRCg6iQVk0k4Ap-h/edit?usp=sharing&ouid=110485872952128049518&rtpof=true&sd=true
+> Пояснительная записка: https://docs.google.com/document/d/1ErajpF4I66NZdh_9ToGg0J12Ae_RD5CN1CA-izFQZFc/edit?usp=sharing
