@@ -1,6 +1,5 @@
 from flask import Flask, render_template, redirect, flash
 from flask import request
-from flask_login import LoginManager, current_user, login_user, login_required
 from data.teachers import Teacher
 from data.students import Student
 from data.portfolios import Portfolio
@@ -11,8 +10,6 @@ from data.db_init import db
 
 
 app = Flask(__name__)
-login_manager = LoginManager()
-login_manager.init_app(app)
 app.config['SECRET_KEY'] = os.urandom(32)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../db/database_pk.db"
@@ -22,10 +19,8 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-
-@login_manager.user_loader
-def load_user(user_id):
-    return db.session.query(Teacher).filter(Teacher.id == user_id).first()
+current_user = None
+user_type = None
 
 
 @app.route("/")
@@ -36,11 +31,13 @@ def index():
 
 @app.route("/teacher-login", methods=['POST', 'GET'])
 def teacher_log():
+    global current_user, user_type
     form = LoginForm()
     if form.validate_on_submit():
         teacher = db.session.query(Teacher).filter(Teacher.login == form.login.data).first()
         if teacher and teacher.check_password(form.password.data):
-            login_user(teacher)
+            current_user = teacher
+            user_type = "teacher"
             return redirect('/teacher-acc')
         else:
             print('Неверный логин или пароль')
@@ -50,11 +47,13 @@ def teacher_log():
 
 @app.route("/student-login", methods=['POST', 'GET'])
 def student_log():
+    global current_user, user_type
     form = LoginForm()
     if form.validate_on_submit():
         student = db.session.query(Student).filter(Student.login == form.login.data).first()
         if student and student.check_password(form.password.data):
-            login_user(student)
+            current_user = student
+            user_type = "student"
             return redirect('/student-acc')
         else:
             print('Неверный логин или пароль')
@@ -81,19 +80,20 @@ def new_acc():
     return render_template('create-acc.html', title='Регистрация', form=form)
 
 
-@login_required
+# @login_required
 @app.route("/teacher-acc")
 def teacher_acc():
-    teacher = db.session.query(Teacher).filter(Teacher.id == current_user.id).first()
-    classes = [c for c in db.session.query(Classroom).all() if c.teacher_id == teacher.id]
-    return render_template("teacher-acc.html", teacher=teacher, classes=classes)
+    if not (current_user and user_type == "teacher"):
+        return redirect("/teacher-login")
+    classes = [c for c in db.session.query(Classroom).all() if c.teacher_id == current_user.id]
+    return render_template("teacher-acc.html", teacher=current_user, classes=classes)
 
 
-@login_required
 @app.route("/student-acc")
 def student_acc():
-    students = db.session.query(Student)
-    return render_template("student-acc.html", students=students)
+    if not (current_user and user_type == "student"):
+        return redirect("/student-login")
+    return render_template("student-acc.html", students=current_user)
 
 
 if __name__ == '__main__':
