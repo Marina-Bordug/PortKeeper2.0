@@ -26,3 +26,11 @@ class AddNewStudent(FlaskForm):
     name = StringField('Имя', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired(), Length(3, 10)], render_kw={"placeholder": "Пароль"})
     submit = SubmitField('Добавить')
+
+
+class AddNewPortfolio(FlaskForm):
+    name = StringField('Имя', validators=[DataRequired()])
+    subject = StringField('Предмет', validators=[DataRequired()])
+    level = StringField('Уровень', validators=[DataRequired()])
+    result = StringField('Результат', validators=[DataRequired()])
+    submit = SubmitField('Добавить')

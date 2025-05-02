@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container mx-auto ml-4">
+    <div class="container mx-auto">
         <div class="flex flex-col md:flex-row gap-8">
             <!-- Левая колонка с аватаркой и описанием -->
-            <div class="w-full md:w-1/4 mt-4">
+            <div class="w-full md:w-1/4">
                 <div class="bg-white rounded-lg shadow p-6 sticky top-6">
                     <div class="flex flex-col items-center">
                         <!-- Аватарка -->
@@ -14,8 +14,8 @@
                         </div>
 
                         <!-- Имя пользователя -->
-                        <h2 class="text-xl font-bold text-gray-900">{{student.name}}</h2>
-                        <p class="text-gray-500 mb-2">{{student.login}}</p>
+                        <h2 class="text-xl font-bold text-gray-900">{{name}}</h2>
+                        <p class="text-gray-500 mb-2">{{login}}</p>
 
                         <!-- Описание -->
                         <p class="text-gray-700 text-center mb-4">
@@ -24,7 +24,7 @@
 
                         <div class="flex justify-around w-full border-t pt-4 justify-center">
                             <div class="text-center">
-                                <p class="font-bold">{{class_name}}</p>
+                                <p class="font-bold">10б</p>
                                 <p class="text-sm text-gray-500">Класс</p>
                             </div>
                         </div>
@@ -32,13 +32,15 @@
                 </div>
             </div>
 
+
+
             <!-- Правая колонка с таблицей фотографий -->
-            <div class="w-full md:w-3/4 mr-8">
-                <div class="bg-white rounded-lg shadow p-6 mt-4">
+            <div class="w-full md:w-3/4">
+                <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">Мои достижения</h2>
 
                     <!-- Таблица с фотографиями -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <!-- Фото 1 -->
                         <div class="rounded-lg overflow-hidden shadow-md">
                             <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg"

@@ -4,7 +4,7 @@ from data.teachers import Teacher
 from data.students import Student
 from data.portfolios import Portfolio
 from data.classes import Classroom
-from forms.login import LoginForm, RegisterForm, AddNewCLass, AddNewStudent
+from forms.login import LoginForm, RegisterForm, AddNewCLass, AddNewStudent, AddNewPortfolio
 import os
 from data.db_init import db
 
@@ -93,7 +93,14 @@ def teacher_acc():
 def student_acc():
     if not (current_user and user_type == "student"):
         return redirect("/student-login")
-    return render_template("student-acc.html", students=current_user)
+    classroom = [c for c in db.session.query(Classroom).all() if c.id == current_user.class_id][0]
+    return render_template("student-acc.html", student=current_user, class_name=classroom.class_number)
+
+
+@app.route("/student-acc-show/<int:id>/<login>/<name>")
+def student_acc_show(id, login, name):
+    portfolios = [p for p in db.session.query(Portfolio).all() if p.student_id == id]
+    return render_template("student-acc-show.html", student_id=id, portfolios=portfolios, login=login, name=name)
 
 
 @app.route("/add-class/<int:id>", methods=['GET', 'POST'])
@@ -142,11 +149,6 @@ def new_student(id, name):
         db.session.commit()
         return redirect(f'/teacher-acc-class/{id}/{name}')
     return render_template('add-student.html', title='Создание класса', form=form)
-
-
-@app.route("/student-acc-show/<int:id>")
-def student_acc_show():
-    return render_template("student-acc.html")
 
 
 if __name__ == '__main__':
