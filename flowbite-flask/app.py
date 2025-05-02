@@ -4,7 +4,7 @@ from data.teachers import Teacher
 from data.students import Student
 from data.portfolios import Portfolio
 from data.classes import Classroom
-from forms.login import LoginForm, RegisterForm
+from forms.login import LoginForm, RegisterForm, AddNewCLass, AddNewStudent
 import os
 from data.db_init import db
 
@@ -12,7 +12,7 @@ from data.db_init import db
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../db/database_pk.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../flowbite-flask/db/database_pk.db"
 
 db.init_app(app)
 
@@ -86,7 +86,7 @@ def teacher_acc():
     if not (current_user and user_type == "teacher"):
         return redirect("/teacher-login")
     classes = [c for c in db.session.query(Classroom).all() if c.teacher_id == current_user.id]
-    return render_template("teacher-acc.html", teacher=current_user, classes=classes)
+    return render_template("teacher-acc.html", teacher=current_user, classes=classes, t_id=current_user.id)
 
 
 @app.route("/student-acc")
@@ -94,6 +94,59 @@ def student_acc():
     if not (current_user and user_type == "student"):
         return redirect("/student-login")
     return render_template("student-acc.html", students=current_user)
+
+
+@app.route("/add-class/<int:id>", methods=['GET', 'POST'])
+def new_class(id):
+    form = AddNewCLass()
+    if form.validate_on_submit():
+        if db.session.query(Classroom).filter(Classroom.class_number == form.name.data).first():
+            return render_template('add-class.html', title='Создание класса',
+                                   form=form,
+                                   message="Такой класс уже есть")
+        classroom = Classroom(
+            class_number=form.name.data,
+            teacher_id=id,
+        )
+        db.session.add(classroom)
+        db.session.commit()
+        return redirect('/teacher-acc')
+    return render_template('add-class.html', title='Создание класса', form=form)
+
+
+@app.route("/teacher-acc-class/<int:classroom>/<classroom_name>")
+def teacher_acc_class(classroom, classroom_name):
+    if not (current_user and user_type == "teacher"):
+        return redirect("/teacher-login")
+    students = [s for s in db.session.query(Student).all() if s.class_id == classroom]
+    print(students)
+    return render_template("teacher-acc-class.html", teacher=current_user, students=students,
+                           c_id=classroom, classroom_name=classroom_name)
+
+
+@app.route("/add-student/<int:id>/<name>", methods=['GET', 'POST'])
+def new_student(id, name):
+    form = AddNewStudent()
+    if form.validate_on_submit():
+        if db.session.query(Student).filter(Student.login == form.login.data).first():
+            return render_template('add-class.html', title='Добавление ученика',
+                                   form=form,
+                                   message="Такой ученик уже есть")
+        student = Student(
+            login=form.login.data,
+            name=form.name.data,
+            class_id=id
+        )
+        student.set_password(form.password.data)
+        db.session.add(student)
+        db.session.commit()
+        return redirect(f'/teacher-acc-class/{id}/{name}')
+    return render_template('add-student.html', title='Создание класса', form=form)
+
+
+@app.route("/student-acc-show/<int:id>")
+def student_acc_show():
+    return render_template("student-acc.html")
 
 
 if __name__ == '__main__':

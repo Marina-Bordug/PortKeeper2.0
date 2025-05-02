@@ -14,3 +14,15 @@ class RegisterForm(FlaskForm):
     name = StringField('Имя', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired(), Length(3, 10)], render_kw={"placeholder": "Пароль"})
     submit = SubmitField('Войти')
+
+
+class AddNewCLass(FlaskForm):
+    name = StringField('Имя класса', validators=[DataRequired()])
+    submit = SubmitField('Создать')
+
+
+class AddNewStudent(FlaskForm):
+    login = StringField('Логин', validators=[DataRequired()])
+    name = StringField('Имя', validators=[DataRequired()])
+    password = PasswordField('Пароль', validators=[DataRequired(), Length(3, 10)], render_kw={"placeholder": "Пароль"})
+    submit = SubmitField('Добавить')
