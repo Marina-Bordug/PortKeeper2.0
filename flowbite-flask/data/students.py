@@ -20,6 +20,7 @@ class Student(db.Model, UserMixin, SerializerMixin):
     avatar = sqlalchemy.Column(sqlalchemy.BLOB, nullable=True)
     class_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("classes.id"))
     classroom = orm.relationship('Classroom')
+    portfolio = orm.relationship("Portfolio", back_populates='student')
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

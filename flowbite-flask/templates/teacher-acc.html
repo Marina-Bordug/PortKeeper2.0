@@ -1,7 +1,63 @@
 {% extends 'base.html' %}
 {% block content %}
-<main class="flex-grow flex items-center justify-center p-4">
-    <div class="teacher-acc items-center justify-center">
+<main class="flex-grow flex items-center justify-center p-4 relative">
+    <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+   <span class="sr-only">Open sidebar</span>
+   <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+   <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+   </svg>
+</button>
+
+<aside id="default-sidebar" class="absolute top-0 left-0 z-40 w-64 h-full transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+  <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+      <ul class="space-y-2 font-medium">
+         <li>
+            <a href="/teacher-acc" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"/>
+</svg>
+               <span class="ms-3">К личным данным</span>
+            </a>
+         </li>
+         <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white mb-5 ">
+            <h1>Классы</h1>
+         </div>
+         <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+            {% for class in classes %}
+    
+            <li class="py-3 sm:py-4">
+               <div class="flex items-center space-x-4 rtl:space-x-reverse hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                  <div class="shrink-0">
+                     <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-2.jpg" alt="Neil image">
+                  </div>
+                  <div class="flex-1 min-w-0">
+                     <div class="flex justify-between">
+                        <a href="/teacher-acc-class/{{class.id}}/{{class.class_number}}" class="text-sm font-medium text-gray-900 truncate dark:text-white flex justify-between">
+                        {{ class.class_number }} </a>
+                        <a href="/class_delete/{{ class.id }}">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                              <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+                           </svg>
+                        </a>
+                  </div>
+                     <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                        Class
+                     </p>
+                     
+                  </div>
+               </div>
+            </li>
+            {% endfor %}
+         </ul>
+      <a href="/add-class/{{t_id}}" class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">+</a>
+
+
+<!-- ///////////////////////////////////// -->
+
+</div></aside>
+
+<div>
+    <div class="p-4 sm:ml-64 dark:bg-gray-800 teacher-acc items-center justify-center">
         <div class="flex items-center gap-4 mb-5">
             <img class="w-10 h-10 rounded-full" src="profile_pic.png" alt="">
             <div class="font-medium dark:text-white">
@@ -10,36 +66,28 @@
                 </div>
                 <div class="text-sm text-gray-500 dark:text-gray-400">Teacher</div>
             </div>
-        </div>
+ </div>
 
 
-        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white mb-5">
-            <h1>Классы</h1>
+        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white mb-5 ">
+            <h1>Личные данные</h1>
          </div>
     <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
         {% for class in classes %}
 
         <li class="py-3 sm:py-4">
-           <div class="flex items-center space-x-4 rtl:space-x-reverse">
-              <div class="shrink-0">
-                 <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-2.jpg" alt="Neil image">
-              </div>
-              <div class="flex-1 min-w-0">
-                 <a href="/teacher-acc-class/{{class.id}}/{{class.class_number}}" class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                    {{ class.class_number }}
-                 </a>
-                 <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                    Class
-                 </p>
-              </div>
-    <!--          <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">-->
-    <!--             $67-->
-    <!--          </div>-->
-           </div>
+           <h1></h1>
+        </li>
+        <li class="py-3 sm:py-4">
+           
+        </li>
+        <li class="py-3 sm:py-4">
+           
         </li>
         {% endfor %}
      </ul>
         <a href="/add-class/{{t_id}}" class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">+</a>
     </div>
+</div>
 </main>
 {% endblock %}

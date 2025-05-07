@@ -52,3 +52,7 @@
     @apply ml-10 mt-5 max-w-sm w-full bg-white p-8 rounded-lg shadow-md dark:bg-gray-800;
     justify-content: center;
 }
+
+.bg {
+    background-color: rgba(0, 0, 0, 0.5);
+}
