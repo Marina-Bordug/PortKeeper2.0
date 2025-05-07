@@ -88,7 +88,17 @@ def teacher_acc():
                            classes=[c for c in db.session.query(Classroom).all() if c.teacher_id == current_user.id])
 
 
-@app.route("/student-acc")
+@app.route('/class_delete/<int:id>', methods=['GET', 'POST'])
+def class_delete(id):
+    classroom = db.session.query(Classroom).filter(Classroom.id == id,
+                                      Classroom.teacher_id == current_user.id).first()
+    if classroom:
+        db.session.delete(classroom)
+        db.session.commit()
+    return redirect('/teacher-acc')
+
+
+@app.route("/student-acc", methods=['GET', 'POST'])
 def student_acc():
     if not (current_user and user_type == "student"):
         return redirect("/student-login")
