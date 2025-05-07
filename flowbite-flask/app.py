@@ -89,36 +89,12 @@ def teacher_acc():
     return render_template("teacher-acc.html", teacher=current_user, classes=classes, t_id=current_user.id)
 
 
-@app.route('/class_delete/<int:id>', methods=['GET', 'POST'])
-def class_delete(id):
-    classroom = db.session.query(Classroom).filter(Classroom.id == id,
-                                      Classroom.teacher_id == current_user.id).first()
-    if classroom:
-        db.session.delete(classroom)
-        db.session.commit()
-    return redirect('/teacher-acc')
-
-
-@app.route("/student-acc", methods=['GET', 'POST'])
+@app.route("/student-acc")
 def student_acc():
     if not (current_user and user_type == "student"):
         return redirect("/student-login")
-    portfolios = [p for p in db.session.query(Portfolio).all() if p.student_id == current_user.id]
     classroom = [c for c in db.session.query(Classroom).all() if c.id == current_user.class_id][0]
-    form = AddNewPortfolio()
-    if form.validate_on_submit():
-        print(1)
-        port = Portfolio(
-            name=form.name.data,
-            subject=form.subject.data,
-            level=form.level.data,
-            result=form.result.data,
-            file=form.file.data
-        )
-        db.session.add(port)
-        db.session.commit()
-    return render_template("student-acc.html", student=current_user, class_name=classroom.class_number,
-                           portfolio=portfolios, form=form)
+    return render_template("student-acc.html", student=current_user, class_name=classroom.class_number)
 
 
 @app.route("/student-acc-show/<int:id>/<login>/<name>")
@@ -131,7 +107,6 @@ def student_acc_show(id, login, name):
 def new_class(id):
     form = AddNewCLass()
     if form.validate_on_submit():
-        # if any([c.name == form.name.data for c in current_user.classrooms]):
         if db.session.query(Classroom).filter(Classroom.class_number == form.name.data).first():
             return render_template('add-class.html', title='Создание класса',
                                    form=form,
