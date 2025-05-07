@@ -136,7 +136,7 @@ def new_student(id, name):
     form = AddNewStudent()
     if form.validate_on_submit():
         if db.session.query(Student).filter(Student.login == form.login.data).first():
-            return render_template('add-class.html', title='Добавление ученика',
+            return render_template('add-student.html', title='Добавление ученика',
                                    form=form,
                                    message="Такой ученик уже есть")
         student = Student(
