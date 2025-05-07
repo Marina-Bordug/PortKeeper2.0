@@ -19,7 +19,7 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-current_user = None
+current_user: Teacher | Student | None = None
 user_type = None
 
 
@@ -85,16 +85,16 @@ def new_acc():
 def teacher_acc():
     if not (current_user and user_type == "teacher"):
         return redirect("/teacher-login")
-    classes = [c for c in db.session.query(Classroom).all() if c.teacher_id == current_user.id]
-    return render_template("teacher-acc.html", teacher=current_user, classes=classes, t_id=current_user.id)
+    return render_template("teacher-acc.html", teacher=current_user,
+                           classes=[c for c in db.session.query(Classroom).all() if c.teacher_id == current_user.id])
 
 
 @app.route("/student-acc")
 def student_acc():
     if not (current_user and user_type == "student"):
         return redirect("/student-login")
-    classroom = [c for c in db.session.query(Classroom).all() if c.id == current_user.class_id][0]
-    return render_template("student-acc.html", student=current_user, class_name=classroom.class_number)
+    return render_template("student-acc.html", student=current_user,
+                           class_name=db.session.query(Classroom).filter(Classroom.id == current_user.class_id).first().class_number)
 
 
 @app.route("/student-acc-show/<int:id>/<login>/<name>")
