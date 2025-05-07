@@ -4,7 +4,7 @@
         <div class="flex flex-col md:flex-row gap-8">
             <!-- Левая колонка с аватаркой и описанием -->
             <div class="w-full md:w-1/4 mt-4">
-                <div class="bg-white rounded-lg shadow p-6 sticky top-6">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 sticky top-6">
                     <div class="flex flex-col items-center">
                         <!-- Аватарка -->
                         <div class="w-32 h-32 rounded-full overflow-hidden mb-4">
@@ -14,75 +14,162 @@
                         </div>
 
                         <!-- Имя пользователя -->
-                        <h2 class="text-xl font-bold text-gray-900">{{student.name}}</h2>
-                        <p class="text-gray-500 mb-2">{{student.login}}</p>
+                        <h2 class="text-xl font-bold text-white">{{student.name}}</h2>
+                        <p class="text-white mb-2">{{student.login}}</p>
 
                         <!-- Описание -->
-                        <p class="text-gray-700 text-center mb-4">
+                        <p class="text-gray-400 text-center mb-4">
                             Описание самого обычного ученика
                         </p>
-
                         <div class="flex justify-around w-full border-t pt-4 justify-center">
                             <div class="text-center">
-                                <p class="font-bold">{{class_name}}</p>
-                                <p class="text-sm text-gray-500">Класс</p>
+                                <p class="font-bold text-white">{{class_name}}</p>
+                                <p class="text-sm text-gray-400">Класс</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Правая колонка с таблицей фотографий -->
-            <div class="w-full md:w-3/4 mr-8">
-                <div class="bg-white rounded-lg shadow p-6 mt-4">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Мои достижения</h2>
-
-                    <!-- Таблица с фотографиями -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-                        <!-- Фото 1 -->
-                        <div class="rounded-lg overflow-hidden shadow-md">
-                            <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg"
-                                 alt="Фото 1"
-                                 class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="font-semibold">Горный пейзаж</h3>
-                                <p class="text-sm text-gray-500">12 мая 2023</p>
-                            </div>
-                        </div>
-                        <div class="rounded-lg overflow-hidden shadow-md">
-                            <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg"
-                                 alt="Фото 5"
-                                 class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="font-semibold">Закат на пляже</h3>
-                                <p class="text-sm text-gray-500">3 января 2023</p>
-                            </div>
-                        </div>
-
-                    <!-- Пагинация -->
-                    <div class="flex justify-center mt-8">
-                        <nav>
-                            <ul class="inline-flex -space-x-px">
-                                <li>
-                                    <a href="#" class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">Назад</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">1</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">3</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">Вперед</a>
-                                </li>
-                            </ul>
-                        </nav>
+<!--            ////////////////////////////////////-->
+<div class="overflow-x-auto shadow-md sm:rounded-lg mt-4 h-full">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Название
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <div class="flex items-center">
+                        Предмет
+                        <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
+  </svg></a>
                     </div>
-                </div>
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <div class="flex items-center">
+                        Уровень
+                        <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
+  </svg></a>
+                    </div>
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <div class="flex items-center">
+                        Результат
+                        <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
+  </svg></a>
+                    </div>
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <div class="flex items-center">
+                        Файл для скачивания
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for port in portfolio %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                   {{port.name}}
+                </th>
+                <td class="px-6 py-4">
+                    {{port.subject}}
+                </td>
+                <td class="px-6 py-4">
+                    {{port.level}}
+                </td>
+                <td class="px-6 py-4">
+                    {{port.result}}
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Скачать файл</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</divdev>
+<button type="button" 
+class="text-white bg-yellow-400 hover:bg-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 w-full mt-4"
+data-modal-target="add-achievement-modal" 
+data-modal-toggle="add-achievement-modal">
+Добавить достижение
+</button>
+<!--//////////////////////////////ФОРМА///////////////////////////-->
+<!-- Модальное окно с формой -->
+<div id="add-achievement-modal" tabindex="-1" 
+     class="hidden fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full bg bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full">
+        <!-- Модальное содержание -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Заголовок модального окна -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Добавить новое достижение
+                </h3>
+                <button type="button" 
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" 
+                        data-modal-toggle="add-achievement-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Закрыть</span>
+                </button>
             </div>
+    <!-- Тело формы -->
+    <form class="p-4 md:p-5" method="POST" enctype="multipart/form-data">
+        {{form.hidden_tag()}}
+        <div class="grid gap-4 mb-4 grid-cols-2">
+            <div class="col-span-2">
+
+                {{ form.name.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+                {{ form.name(class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500") }}
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+                {{ form.subject.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+                {{ form.subject(class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500") }}
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+                {{ form.level.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+                <select id="level" name="level" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <option selected="">Выберите уровень</option>
+                    <option value="Школьный">Школьный</option>
+                    <option value="Муниципальный">Муниципальный</option>
+                    <option value="Региональный">Региональный</option>
+                    <option value="Всероссийский">Всероссийский</option>
+                    <option value="Международный">Международный</option>
+                </select>
+            </div>
+            <div class="col-span-2">
+                {{ form.result.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+                <select id="result" name="level" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <option selected="">Выберите результат</option>
+                    <option value="Победитель">Победитель</option>
+                    <option value="Призёр">Призёр</option>
+                    <option value="Учaстие">Участие</option>
+            </select>           
+        </div>
+            <div class="col-span-2">
+                {{ form.file.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+                <input type="file" name="file" id="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" required>
+                <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">Загрузите файл с подтверждением достижения</div>
+            </div>
+        </div>
+            {{ form.submit(type="submit", class="text-white inline-flex items-center bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-400 dark:hover:bg-yellow-500 dark:focus:ring-yellow-600") }}
+<!--        <button type="submit" class="text-white inline-flex items-center bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-400 dark:hover:bg-yellow-500 dark:focus:ring-yellow-600">-->
+<!--            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>-->
+<!--            Добавить-->
+<!--        </button>-->
+    </form>
+</div>
+
+
+            </div>
+            
         </div>
     </div>
 

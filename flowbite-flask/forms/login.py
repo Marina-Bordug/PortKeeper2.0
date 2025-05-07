@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, TextAreaField, SubmitField, EmailField
+from wtforms import PasswordField, StringField, TextAreaField, SubmitField, EmailField, FileField,SelectField
 from wtforms.validators import DataRequired, Length
 
 
@@ -29,8 +29,9 @@ class AddNewStudent(FlaskForm):
 
 
 class AddNewPortfolio(FlaskForm):
-    name = StringField('Имя', validators=[DataRequired()])
-    subject = StringField('Предмет', validators=[DataRequired()])
-    level = StringField('Уровень', validators=[DataRequired()])
+    name = StringField('Название', validators=[DataRequired()], render_kw={"placeholder": "Введите название достижения"})
+    subject = StringField('Предмет', validators=[DataRequired()], render_kw={"placeholder": "Выберите предмет"})
+    level = SelectField('Уровень', validators=[DataRequired()], choices=[])
     result = StringField('Результат', validators=[DataRequired()])
+    file = FileField('Файл', validators=[DataRequired()])
     submit = SubmitField('Добавить')
