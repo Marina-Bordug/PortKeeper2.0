@@ -103,6 +103,7 @@ def student_acc_show(id, login, name):
     return render_template("student-acc-show.html", student_id=id, portfolios=portfolios, login=login, name=name)
 
 
+print(1)
 @app.route("/add-class/<int:id>", methods=['GET', 'POST'])
 def new_class(id):
     form = AddNewCLass()
