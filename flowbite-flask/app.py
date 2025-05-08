@@ -80,7 +80,6 @@ def new_acc():
     return render_template('create-acc.html', title='Регистрация', form=form)
 
 
-# @login_required
 @app.route("/teacher-acc")
 def teacher_acc():
     if not (current_user and user_type == "teacher"):
@@ -106,7 +105,6 @@ def student_acc():
     portfolios = [p for p in db.session.query(Portfolio).all() if p.student_id == current_user.id]
     form = AddNewPortfolio()
     if form.validate_on_submit():
-        print(1)
         port = Portfolio(
             name=form.name.data,
             subject=form.subject.data,
