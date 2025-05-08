@@ -89,12 +89,36 @@ def teacher_acc():
                            classes=[c for c in db.session.query(Classroom).all() if c.teacher_id == current_user.id])
 
 
-@app.route("/student-acc")
+@app.route('/class_delete/<int:id>', methods=['GET', 'POST'])
+def class_delete(id):
+    classroom = db.session.query(Classroom).filter(Classroom.id == id,
+                                      Classroom.teacher_id == current_user.id).first()
+    if classroom:
+        db.session.delete(classroom)
+        db.session.commit()
+    return redirect('/teacher-acc')
+
+
+@app.route("/student-acc", methods=['GET', 'POST'])
 def student_acc():
     if not (current_user and user_type == "student"):
         return redirect("/student-login")
-    return render_template("student-acc.html", student=current_user,
-                           class_name=db.session.query(Classroom).filter(Classroom.id == current_user.class_id).first().class_number)
+    portfolios = [p for p in db.session.query(Portfolio).all() if p.student_id == current_user.id]
+    form = AddNewPortfolio()
+    if form.validate_on_submit():
+        print(1)
+        port = Portfolio(
+            name=form.name.data,
+            subject=form.subject.data,
+            level=form.level.data,
+            result=form.result.data,
+            file=form.file.data,
+            student_id=current_user.id
+        )
+        db.session.add(port)
+        db.session.commit()
+    return render_template("student-acc.html", student=current_user, class_name=db.session.query(Classroom).filter(Classroom.id == current_user.class_id).first().class_number,
+                           portfolio=portfolios, form=form)
 
 
 @app.route("/student-acc-show/<int:id>/<login>/<name>")

@@ -31,7 +31,13 @@ class AddNewStudent(FlaskForm):
 class AddNewPortfolio(FlaskForm):
     name = StringField('Название', validators=[DataRequired()], render_kw={"placeholder": "Введите название достижения"})
     subject = StringField('Предмет', validators=[DataRequired()], render_kw={"placeholder": "Выберите предмет"})
-    level = SelectField('Уровень', validators=[DataRequired()], choices=[])
-    result = StringField('Результат', validators=[DataRequired()])
+    level = SelectField('Уровень', validators=[DataRequired()], choices=[("Школьный", "Школьный"),
+                                                                         ("Муниципальный", "Муниципальный"),
+                                                                         ("Региональный", "Региональный"),
+                                                                         ("Всероссийский", "Всероссийский"),
+                                                                         ("Международный", "Международный")])
+    result = SelectField('Результат', validators=[DataRequired()], choices=[("Победитель", "Победитель"),
+                                                                         ("Призёр", "Призёр"),
+                                                                         ("Учaстие", "Учaстие")])
     file = FileField('Файл', validators=[DataRequired()])
     submit = SubmitField('Добавить')
