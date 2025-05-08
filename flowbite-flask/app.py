@@ -110,7 +110,7 @@ def student_acc():
             subject=form.subject.data,
             level=form.level.data,
             result=form.result.data,
-            file=form.file.data,
+            file=form.file.data.read(),
             student_id=current_user.id
         )
         db.session.add(port)
@@ -125,7 +125,6 @@ def student_acc_show(id, login, name):
     return render_template("student-acc-show.html", student_id=id, portfolios=portfolios, login=login, name=name)
 
 
-print(1)
 @app.route("/add-class/<int:id>", methods=['GET', 'POST'])
 def new_class(id):
     form = AddNewCLass()
