@@ -1,3 +1,4 @@
+import pickle
 from flask import Flask, render_template, redirect, flash
 from flask import request
 from data.teachers import Teacher
@@ -102,7 +103,7 @@ def class_delete(id):
 def student_acc():
     if not (current_user and user_type == "student"):
         return redirect("/student-login")
-    portfolios = [p for p in db.session.query(Portfolio).all() if p.student_id == current_user.id]
+    portfolios = [{"name": p.name, "subject": p.subject, "level": p.level, "result": p.result, "file": pickle.loads(p.file), "student_id": p.student_id} for p in db.session.query(Portfolio).all() if p.student_id == current_user.id]
     form = AddNewPortfolio()
     if form.validate_on_submit():
         port = Portfolio(
@@ -110,7 +111,7 @@ def student_acc():
             subject=form.subject.data,
             level=form.level.data,
             result=form.result.data,
-            file=form.file.data.read(),
+            file=pickle.dumps((form.file.data.read(), form.file.data.filename.split(".")[-1])),
             student_id=current_user.id
         )
         db.session.add(port)
