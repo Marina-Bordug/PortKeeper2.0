@@ -1,5 +1,6 @@
+import io
 import pickle
-from flask import Flask, render_template, redirect, flash
+from flask import Flask, render_template, redirect, flash, send_file
 from flask import request
 from data.teachers import Teacher
 from data.students import Student
@@ -8,7 +9,6 @@ from data.classes import Classroom
 from forms.login import LoginForm, RegisterForm, AddNewCLass, AddNewStudent, AddNewPortfolio
 import os
 from data.db_init import db
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)
@@ -92,7 +92,7 @@ def teacher_acc():
 @app.route('/class_delete/<int:id>', methods=['GET', 'POST'])
 def class_delete(id):
     classroom = db.session.query(Classroom).filter(Classroom.id == id,
-                                      Classroom.teacher_id == current_user.id).first()
+                                                   Classroom.teacher_id == current_user.id).first()
     if classroom:
         db.session.delete(classroom)
         db.session.commit()
@@ -103,7 +103,9 @@ def class_delete(id):
 def student_acc():
     if not (current_user and user_type == "student"):
         return redirect("/student-login")
-    portfolios = [{"name": p.name, "subject": p.subject, "level": p.level, "result": p.result, "file": pickle.loads(p.file), "student_id": p.student_id} for p in db.session.query(Portfolio).all() if p.student_id == current_user.id]
+    portfolios = [
+        {"name": p.name, "subject": p.subject, "level": p.level, "result": p.result, "file": pickle.loads(p.file),
+         "student_id": p.student_id} for p in db.session.query(Portfolio).all() if p.student_id == current_user.id]
     form = AddNewPortfolio()
     if form.validate_on_submit():
         port = Portfolio(
@@ -116,13 +118,32 @@ def student_acc():
         )
         db.session.add(port)
         db.session.commit()
-    return render_template("student-acc.html", student=current_user, class_name=db.session.query(Classroom).filter(Classroom.id == current_user.class_id).first().class_number,
+        return redirect('/student-acc')
+    return render_template("student-acc.html", student=current_user, class_name=db.session.query(Classroom).filter(
+        Classroom.id == current_user.class_id).first().class_number,
                            portfolio=portfolios, form=form)
+
+
+@app.route('/avatar')
+def avatar():
+    ib = io.BytesIO(current_user.avatar)
+    return send_file(ib, as_attachment=False, mimetype='jpg')
+
+
+@app.route('/send-avatar', methods=["POST"])
+def get_send_avatar():
+    current_user.avatar = request.data
+    db.session.merge(current_user)
+    db.session.flush()
+    db.session.commit()
+    return ""
 
 
 @app.route("/student-acc-show/<int:id>/<login>/<name>")
 def student_acc_show(id, login, name):
-    portfolios = [p for p in db.session.query(Portfolio).all() if p.student_id == id]
+    portfolios = [
+        {"name": p.name, "subject": p.subject, "level": p.level, "result": p.result, "file": pickle.loads(p.file),
+         "student_id": p.student_id} for p in db.session.query(Portfolio).all() if p.student_id == current_user.id]
     return render_template("student-acc-show.html", student_id=id, portfolios=portfolios, login=login, name=name)
 
 
