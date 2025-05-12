@@ -67,10 +67,10 @@
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-3" onclick="sortTable(0)">
                             Название
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-3" onclick="sortTable(1)">
                             <div class="flex items-center">
                                 Предмет
                                 <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true"
@@ -80,7 +80,7 @@
                                     </svg></a>
                             </div>
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-3" onclick="sortTable(2)">
                             <div class="flex items-center">
                                 Уровень
                                 <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true"
@@ -90,7 +90,7 @@
                                     </svg></a>
                             </div>
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-3" onclick="sortTable(3)">
                             <div class="flex items-center">
                                 Результат
                                 <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true"
@@ -122,8 +122,14 @@
                         <td class="px-6 py-4">
                             {{port.result}}
                         </td>
+<!--                        <td class="px-6 py-4 text-right">-->
+<!--                            <a href="{{ port.file[0] }}"-->
+<!--                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"-->
+<!--                                download="{{ port.result }}_{{ port.name }}_{{ port.level }}_уровень_{{ port.subject }}.{{ port.file[1] }}">Скачать-->
+<!--                                файл</a>-->
+<!--                        </td>-->
                         <td class="px-6 py-4 text-right">
-                            <a href="{{ port.file[0] }}"
+                            <a href="/file/{{port.file[0]}}"
                                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                 download="{{ port.result }}_{{ port.name }}_{{ port.level }}_уровень_{{ port.subject }}.{{ port.file[1] }}">Скачать
                                 файл</a>
@@ -221,6 +227,47 @@
 
             </div>
         </div>
+        <script>
+            let currentColumn = -1;
+            let ascending = true;
+
+            function sortTable(columnIndex) {
+                const table = document.querySelector('table');
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+
+                // Определяем направление сортировки
+                if (currentColumn === columnIndex) {
+                    ascending = !ascending;
+                } else {
+                    currentColumn = columnIndex;
+                    ascending = true;
+                }
+
+                rows.sort((a, b) => {
+                    const aValue = a.cells[columnIndex].textContent.trim();
+                    const bValue = b.cells[columnIndex].textContent.trim();
+
+                    // Для числовых значений (например, "Уровень")
+                    if (!isNaN(aValue) && !isNaN(bValue)) {
+                        return ascending
+                            ? Number(aValue) - Number(bValue)
+                            : Number(bValue) - Number(aValue);
+                    }
+
+                    // Для текстовых значений
+                    return ascending
+                        ? aValue.localeCompare(bValue)
+                        : bValue.localeCompare(aValue);
+                });
+
+                // Очищаем и перезаполняем tbody
+                while (tbody.firstChild) {
+                    tbody.removeChild(tbody.firstChild);
+                }
+                rows.forEach(row => tbody.appendChild(row));
+            }
+        </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     </div>
 </div>

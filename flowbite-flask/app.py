@@ -124,6 +124,11 @@ def student_acc():
                            portfolio=portfolios, form=form)
 
 
+@app.route('/file/<file_name>')
+def file(file_name):
+    ib = io.BytesIO(file_name)
+    return send_file(ib, as_attachment=False, mimetype='jpeg/jpg/png/pdf')
+
 @app.route('/avatar')
 def avatar():
     ib = io.BytesIO(current_user.avatar)
@@ -137,15 +142,6 @@ def get_send_avatar():
     db.session.flush()
     db.session.commit()
     return ""
-
-
-@app.route("/student-acc-show/<int:id>/<login>/<name>")
-def student_acc_show(id, login, name):
-    portfolios = [
-        {"name": p.name, "subject": p.subject, "level": p.level, "result": p.result, "file": pickle.loads(p.file),
-         "student_id": p.student_id} for p in db.session.query(Portfolio).all() if p.student_id == current_user.id]
-    return render_template("student-acc-show.html", student_id=id, portfolios=portfolios, login=login, name=name)
-
 
 @app.route("/add-class/<int:id>", methods=['GET', 'POST'])
 def new_class(id):
@@ -204,4 +200,4 @@ if __name__ == '__main__':
     # db_sess = db_session.create_session()
     # db_sess.add(teacher)
     # db_sess.commit()
-    app.run(host="127.0.0.1", port=8082, debug=True)
+    app.run(host="127.0.0.1", port=8080, debug=True)

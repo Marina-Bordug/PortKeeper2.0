@@ -75,20 +75,14 @@
             <h1>Личные данные</h1>
          </div>
     <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-        {% for class in classes %}
+        <!-- {% for class in classes %} -->
 
-        <li class="py-3 sm:py-4">
-           <h1></h1>
+        <li class="font-medium dark:text-white">
+           <h1>{{teacher.name }}</h1>
         </li>
-        <li class="py-3 sm:py-4">
-           
-        </li>
-        <li class="py-3 sm:py-4">
-           
-        </li>
-        {% endfor %}
+        <!-- {% endfor %} -->
      </ul>
-        <a href="/add-class/{{ teacher.id }}" class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">+</a>
+        <!-- <a href="/add-class/{{ teacher.id }}" class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">+</a> -->
     </div>
 </div>
 </main>
