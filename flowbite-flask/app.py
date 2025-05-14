@@ -1,4 +1,4 @@
-import io
+from io import BytesIO
 import pickle
 from flask import Flask, render_template, redirect, flash, send_file
 from flask import request
@@ -103,9 +103,7 @@ def class_delete(id):
 def student_acc():
     if not (current_user and user_type == "student"):
         return redirect("/student-login")
-    portfolios = [
-        {"name": p.name, "subject": p.subject, "level": p.level, "result": p.result, "file": pickle.loads(p.file),
-         "student_id": p.student_id} for p in db.session.query(Portfolio).all() if p.student_id == current_user.id]
+    portfolios = db.session.query(Portfolio).filter(Portfolio.student_id == current_user.id).all()
     form = AddNewPortfolio()
     if form.validate_on_submit():
         port = Portfolio(
@@ -124,14 +122,28 @@ def student_acc():
                            portfolio=portfolios, form=form)
 
 
+@app.route("/student-acc/download/<int:port_id>", methods=["GET", "POST"])
+def download(port_id):
+    if not (current_user and user_type == "student"):
+        return redirect("/student-login")
+
+    port = db.session.query(Portfolio).filter(Portfolio.id == port_id).first()
+    if port and port.student_id == current_user.id:
+        filedata = pickle.loads(port.file)
+        return send_file(BytesIO(filedata[0]), as_attachment=True,
+                         download_name=f"{port.result}_{port.name}_{port.level}_уровень_{port.subject}.{filedata[1]}")
+    return redirect("/student-acc")
+
+
 @app.route('/file/<file_name>')
 def file(file_name):
-    ib = io.BytesIO(file_name)
+    ib = BytesIO(file_name)
     return send_file(ib, as_attachment=False, mimetype='jpeg/jpg/png/pdf')
+
 
 @app.route('/avatar')
 def avatar():
-    ib = io.BytesIO(current_user.avatar)
+    ib = BytesIO(current_user.avatar)
     return send_file(ib, as_attachment=False, mimetype='jpg')
 
 
@@ -142,6 +154,7 @@ def get_send_avatar():
     db.session.flush()
     db.session.commit()
     return ""
+
 
 @app.route("/add-class/<int:id>", methods=['GET', 'POST'])
 def new_class(id):

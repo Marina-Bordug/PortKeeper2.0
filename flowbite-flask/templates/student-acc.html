@@ -122,17 +122,9 @@
                         <td class="px-6 py-4">
                             {{port.result}}
                         </td>
-<!--                        <td class="px-6 py-4 text-right">-->
-<!--                            <a href="{{ port.file[0] }}"-->
-<!--                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"-->
-<!--                                download="{{ port.result }}_{{ port.name }}_{{ port.level }}_уровень_{{ port.subject }}.{{ port.file[1] }}">Скачать-->
-<!--                                файл</a>-->
-<!--                        </td>-->
                         <td class="px-6 py-4 text-right">
-                            <a href="/file/{{port.file[0]}}"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                download="{{ port.result }}_{{ port.name }}_{{ port.level }}_уровень_{{ port.subject }}.{{ port.file[1] }}">Скачать
-                                файл</a>
+                            <a href="/student-acc/download/{{ port.id }}"
+                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Скачать файл</a>
                         </td>
                     </tr>
                     {% endfor %}
