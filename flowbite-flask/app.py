@@ -40,9 +40,7 @@ def teacher_login():
             current_user = teacher
             user_type = "teacher"
             return redirect('/teacher-acc')
-        else:
-            print('Неверный логин или пароль')
-            return redirect('/teacher-login')
+        form.password.errors.append("Неверный логин или пароль")
     return render_template("teacher-login.html", form=form)
 
 
@@ -56,9 +54,7 @@ def student_login():
             current_user = student
             user_type = "student"
             return redirect('/student-acc')
-        else:
-            print('Неверный логин или пароль')
-            return redirect('/student-login')
+        form.password.errors.append("Неверный логин или пароль")
     return render_template("student-login.html", form=form)
 
 
@@ -67,17 +63,16 @@ def create_acc():
     form = RegisterForm()
     if form.validate_on_submit():
         if db.session.query(Teacher).filter(Teacher.login == form.login.data).first():
-            return render_template('create-acc.html', title='Регистрация',
-                                   form=form,
-                                   message="Такой пользователь уже есть")
-        teacher = Teacher(
-            name=form.name.data,
-            login=form.login.data,
-        )
-        teacher.set_password(form.password.data)
-        db.session.add(teacher)
-        db.session.commit()
-        return redirect('/teacher-login')
+            form.login.errors.append("Пользователь с таким логином уже есть")
+        else:
+            teacher = Teacher(
+                name=form.name.data,
+                login=form.login.data,
+            )
+            teacher.set_password(form.password.data)
+            db.session.add(teacher)
+            db.session.commit()
+            return redirect('/teacher-login')
     return render_template('create-acc.html', title='Регистрация', form=form)
 
 
@@ -160,17 +155,17 @@ def get_send_avatar():
 def add_class(id):
     form = AddNewCLass()
     if form.validate_on_submit():
-        if db.session.query(Classroom).filter(Classroom.class_number == form.name.data).first():
-            return render_template('add-class.html', title='Создание класса',
-                                   form=form,
-                                   message="Такой класс уже есть")
-        classroom = Classroom(
-            class_number=form.name.data,
-            teacher_id=id,
-        )
-        db.session.add(classroom)
-        db.session.commit()
-        return redirect('/teacher-acc')
+        if db.session.query(Classroom).filter(Classroom.class_number == form.name.data,
+                                              Classroom.teacher_id == current_user.id).first():
+            form.name.errors.append("Такой класс уже есть")
+        else:
+            classroom = Classroom(
+                class_number=form.name.data,
+                teacher_id=id,
+            )
+            db.session.add(classroom)
+            db.session.commit()
+            return redirect('/teacher-acc')
     return render_template('add-class.html', title='Создание класса', form=form)
 
 
@@ -189,18 +184,17 @@ def add_student(id, name):
     form = AddNewStudent()
     if form.validate_on_submit():
         if db.session.query(Student).filter(Student.login == form.login.data).first():
-            return render_template('add-class.html', title='Добавление ученика',
-                                   form=form,
-                                   message="Такой ученик уже есть")
-        student = Student(
-            login=form.login.data,
-            name=form.name.data,
-            class_id=id
-        )
-        student.set_password(form.password.data)
-        db.session.add(student)
-        db.session.commit()
-        return redirect(f'/teacher-acc-class/{id}/{name}')
+            form.login.errors.append("Ученик с таким логином уже есть")
+        else:
+            student = Student(
+                login=form.login.data,
+                name=form.name.data,
+                class_id=id
+            )
+            student.set_password(form.password.data)
+            db.session.add(student)
+            db.session.commit()
+            return redirect(f'/teacher-acc-class/{id}/{name}')
     return render_template('add-student.html', title='Создание класса', form=form)
 
 
