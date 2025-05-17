@@ -1,6 +1,6 @@
 from io import BytesIO
 import pickle
-from flask import Flask, render_template, redirect, flash, send_file
+from flask import Flask, render_template, redirect, send_file
 from flask import request
 from data.teachers import Teacher
 from data.students import Student
@@ -31,7 +31,7 @@ def index():
 
 
 @app.route("/teacher-login", methods=['POST', 'GET'])
-def teacher_log():
+def teacher_login():
     global current_user, user_type
     form = LoginForm()
     if form.validate_on_submit():
@@ -47,7 +47,7 @@ def teacher_log():
 
 
 @app.route("/student-login", methods=['POST', 'GET'])
-def student_log():
+def student_login():
     global current_user, user_type
     form = LoginForm()
     if form.validate_on_submit():
@@ -63,7 +63,7 @@ def student_log():
 
 
 @app.route("/create-acc", methods=['GET', 'POST'])
-def new_acc():
+def create_acc():
     form = RegisterForm()
     if form.validate_on_submit():
         if db.session.query(Teacher).filter(Teacher.login == form.login.data).first():
@@ -157,7 +157,7 @@ def get_send_avatar():
 
 
 @app.route("/add-class/<int:id>", methods=['GET', 'POST'])
-def new_class(id):
+def add_class(id):
     form = AddNewCLass()
     if form.validate_on_submit():
         if db.session.query(Classroom).filter(Classroom.class_number == form.name.data).first():
@@ -185,7 +185,7 @@ def teacher_acc_class(classroom, classroom_name):
 
 
 @app.route("/add-student/<int:id>/<name>", methods=['GET', 'POST'])
-def new_student(id, name):
+def add_student(id, name):
     form = AddNewStudent()
     if form.validate_on_submit():
         if db.session.query(Student).filter(Student.login == form.login.data).first():
@@ -205,12 +205,4 @@ def new_student(id, name):
 
 
 if __name__ == '__main__':
-    # db_session.global_init("./flowbite-flask/pk_database1.db")
-    # teacher = Teacher()
-    # teacher.name = "Марья Ивановна"
-    # teacher.login = "pk_mary_ivanovna"
-    # teacher.password = "456"
-    # db_sess = db_session.create_session()
-    # db_sess.add(teacher)
-    # db_sess.commit()
     app.run(host="127.0.0.1", port=8080, debug=True)
