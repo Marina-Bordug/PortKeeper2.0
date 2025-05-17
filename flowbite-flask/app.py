@@ -6,7 +6,7 @@ from data.teachers import Teacher
 from data.students import Student
 from data.portfolios import Portfolio
 from data.classes import Classroom
-from forms.login import LoginForm, RegisterForm, AddNewCLass, AddNewStudent, AddNewPortfolio
+from forms.forms import LoginForm, RegisterForm, AddNewCLass, AddNewStudent, AddNewPortfolio
 import os
 from data.db_init import db
 
